@@ -4,6 +4,7 @@ import leaderboardReducer from './slices/leaderboardSlice';
 import eventReducer from './slices/eventSlice';
 import userReducer from './slices/userSlice';
 import notificationReducer from './slices/notificationSlice';
+import chatReducer from './slices/chatSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     event: eventReducer,
     user: userReducer,
     notification: notificationReducer,
+    chat: chatReducer,
   },
 });
