@@ -11,6 +11,6 @@ export const store = configureStore({
     leaderboard: leaderboardReducer,
     event: eventReducer,
     user: userReducer,
-    notifications: notificationReducer,
+    notification: notificationReducer,
   },
 });
