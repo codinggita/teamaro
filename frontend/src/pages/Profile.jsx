@@ -5,7 +5,7 @@ import {
   User, Mail, Shield, LogOut, Settings, Award, Activity,
   Zap, Key, ChevronRight, Bell, Lock, Eye, EyeOff,
   BarChart3, Star, Clock, CheckCircle, Edit3, Camera,
-  Trophy, MessageSquare, Calendar, TrendingUp, Globe
+  Trophy, MessageSquare, Calendar, TrendingUp, Globe, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SEO from '../components/SEO';
@@ -19,11 +19,6 @@ const Profile = () => {
   const navigate = useNavigate();
   const toast = useToast();
   
-  const [activeTab, setActiveTab] = useState('overview');
-  const [notificationsOn, setNotificationsOn] = useState(true);
-  const [privacyOn, setPrivacyOn] = useState(false);
-  const [syncOn, setSyncOn] = useState(true);
-
   // Determine which user data to display (dynamic vs current)
   const displayUser = useMemo(() => {
     if (userId) {
@@ -33,7 +28,57 @@ const Profile = () => {
     return currentUser;
   }, [userId, currentUser]);
 
-  const isOwnProfile = !userId || userId === currentUser?.id;
+  const isOwnProfile = !userId || userId === (currentUser?.id || currentUser?.grNumber);
+
+  const [activeTab, setActiveTab] = useState('overview');
+  const [notificationsOn, setNotificationsOn] = useState(() => localStorage.getItem('vanguard_notif_polls') !== 'false');
+  const [privacyOn, setPrivacyOn] = useState(() => localStorage.getItem('vanguard_privacy_mode') === 'true');
+  const [syncOn, setSyncOn] = useState(() => localStorage.getItem('vanguard_notif_events') !== 'false');
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState(() => localStorage.getItem(`vanguard_avatar_${displayUser?.id || 'me'}`));
+  const [avatarStyle, setAvatarStyle] = useState(() => localStorage.getItem(`vanguard_style_${displayUser?.id || 'me'}`) || 'avataaars');
+
+  useEffect(() => {
+    localStorage.setItem('vanguard_notif_polls', notificationsOn);
+    localStorage.setItem('vanguard_privacy_mode', privacyOn);
+    localStorage.setItem('vanguard_notif_events', syncOn);
+    if (isOwnProfile && currentUser) {
+      const id = currentUser.id || currentUser.grNumber;
+      if (profileImage) localStorage.setItem(`vanguard_avatar_${id}`, profileImage);
+      else localStorage.removeItem(`vanguard_avatar_${id}`);
+      localStorage.setItem(`vanguard_style_${id}`, avatarStyle);
+    }
+  }, [notificationsOn, privacyOn, syncOn, profileImage, avatarStyle, isOwnProfile, currentUser]);
+
+  const handleSecurityAction = (action) => {
+    const messages = {
+      password: { title: 'Security Protocol', msg: 'Verification link sent to your authorized email.' },
+      tfa: { title: '2FA Activation', msg: 'Multi-factor authentication system initializing...' },
+      sessions: { title: 'Session Manager', msg: 'Scanning active authorized devices...' }
+    };
+    toast.success(messages[action].title, messages[action].msg);
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+        toast.success('Identity Updated', 'Your custom profile photo has been deployed.');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const cycleAvatarStyle = () => {
+    const styles = ['avataaars', 'bottts', 'pixel-art', 'lorelei', 'identicon'];
+    const currentIndex = styles.indexOf(avatarStyle);
+    const nextStyle = styles[(currentIndex + 1) % styles.length];
+    setAvatarStyle(nextStyle);
+    setProfileImage(null); // Clear custom photo if switching to character
+    toast.info('Avatar Synced', `Identity style switched to ${nextStyle}.`);
+  };
 
   const accountId = displayUser?.accountId || '';
   const joinDate = 'January 2026';
@@ -102,16 +147,30 @@ const Profile = () => {
         <div className="relative z-10 p-8 md:p-12 lg:p-16">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12">
             {/* Avatar */}
-            <div className="relative shrink-0">
-              <div className="w-28 h-28 md:w-36 md:h-36 rounded-[28px] md:rounded-[36px] overflow-hidden bg-slate-800 border-2 border-white/10 shadow-2xl">
+            <div className="relative shrink-0 group/avatar">
+              <div className="w-28 h-28 md:w-36 md:h-36 rounded-[28px] md:rounded-[36px] overflow-hidden bg-slate-800 border-2 border-white/10 shadow-2xl relative">
                 <img
-                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${displayUser.name}`}
+                  src={profileImage || `https://api.dicebear.com/7.x/${avatarStyle}/svg?seed=${localStorage.getItem(`vanguard_seed_${displayUser.id}`) || displayUser.name}`}
                   alt={`${displayUser.name}'s avatar`}
                   className="w-full h-full object-cover"
                 />
+                {isOwnProfile && (
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                    <label className="cursor-pointer p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+                      <Camera size={18} className="text-white" />
+                      <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
+                    </label>
+                    <button 
+                      onClick={() => setIsAvatarModalOpen(true)}
+                      className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                      title="Open Identity Gallery"
+                    >
+                      <User size={18} className="text-white" />
+                    </button>
+                  </div>
+                )}
               </div>
-              {/* Online indicator */}
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-4 border-slate-900 shadow-lg" aria-label="Online" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 md:w-8 md:h-8 rounded-full border-4 border-slate-950 bg-emerald-500 shadow-xl" />
             </div>
 
             {/* Name + Meta */}
@@ -444,12 +503,13 @@ const Profile = () => {
               </header>
               <div className="p-8 space-y-3">
                 {[
-                  { label: 'Change Password', icon: Key, desc: 'Update your login credentials' },
-                  { label: 'Two-Factor Authentication', icon: Shield, desc: 'Add an extra layer of security' },
-                  { label: 'Active Sessions', icon: Globe, desc: 'Manage devices signed into your account' },
+                  { id: 'password', label: 'Change Password', icon: Key, desc: 'Update your login credentials' },
+                  { id: 'tfa', label: 'Two-Factor Authentication', icon: Shield, desc: 'Add an extra layer of security' },
+                  { id: 'sessions', label: 'Active Sessions', icon: Globe, desc: 'Manage devices signed into your account' },
                 ].map((item) => (
                   <button
                     key={item.label}
+                    onClick={() => handleSecurityAction(item.id)}
                     className="w-full flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-sm transition-all group text-left"
                     aria-label={item.label}
                   >
@@ -494,6 +554,90 @@ const Profile = () => {
               </div>
             </section>
           </motion.div>
+        )}
+      </AnimatePresence>
+      {/* ── Identity Gallery Modal ────────────────────────────────────── */}
+      <AnimatePresence>
+        {isAvatarModalOpen && (
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-slate-950/80 backdrop-blur-md"
+              onClick={() => setIsAvatarModalOpen(false)}
+            />
+            
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-2xl vanguard-glass-dark border-white/10 rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[80vh]"
+            >
+              <header className="p-8 border-b border-white/5 flex items-center justify-between">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-black text-white uppercase italic tracking-widest">Identity Vault</h2>
+                  <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">Select your squadron visual signature</p>
+                </div>
+                <button 
+                  onClick={() => setIsAvatarModalOpen(false)}
+                  className="p-3 rounded-full bg-white/5 text-white/50 hover:text-white hover:bg-white/10 transition-all"
+                >
+                  <X size={20} />
+                </button>
+              </header>
+
+              <div className="p-8 overflow-y-auto no-scrollbar grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                {[
+                  { style: 'avataaars', seed: 'Felix' },
+                  { style: 'avataaars', seed: 'Aneka' },
+                  { style: 'bottts', seed: 'Buster' },
+                  { style: 'bottts', seed: 'Zoe' },
+                  { style: 'pixel-art', seed: 'Pixel' },
+                  { style: 'pixel-art', seed: 'Vanguard' },
+                  { style: 'lorelei', seed: 'Lara' },
+                  { style: 'lorelei', seed: 'Aero' },
+                  { style: 'adventure', seed: 'Quest' },
+                  { style: 'adventure', seed: 'Hero' },
+                  { style: 'big-ears', seed: 'Dumbo' },
+                  { style: 'big-smile', seed: 'Happy' },
+                  { style: 'fun-emoji', seed: 'Wink' },
+                  { style: 'identicon', seed: 'Node' },
+                  { style: 'shapes', seed: 'Geom' },
+                  { style: 'thumbs', seed: 'Like' },
+                ].map((opt, i) => (
+                  <motion.button
+                    key={`${opt.style}-${opt.seed}`}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.03 }}
+                    onClick={() => {
+                      setAvatarStyle(opt.style);
+                      setProfileImage(null); // Clear custom photo
+                      // Save specific seed if needed
+                      localStorage.setItem(`vanguard_seed_${currentUser.id}`, opt.seed);
+                      setIsAvatarModalOpen(false);
+                      toast.success('Identity Updated', 'Your new squadron avatar has been synchronized.');
+                    }}
+                    className="group relative aspect-square rounded-[30px] bg-white/5 border border-white/5 p-4 hover:border-sky-500/50 hover:bg-white/10 transition-all"
+                  >
+                    <img 
+                      src={`https://api.dicebear.com/7.x/${opt.style}/svg?seed=${opt.seed}`} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      alt="Avatar Option"
+                    />
+                    <div className="absolute inset-0 bg-sky-500/0 group-hover:bg-sky-500/5 transition-colors rounded-[30px]" />
+                  </motion.button>
+                ))}
+              </div>
+              
+              <footer className="p-8 border-t border-white/5 bg-white/[0.02]">
+                 <p className="text-[9px] font-black text-center text-white/20 uppercase tracking-[0.4em]">
+                    Vanguard AERO Neural Identity Grid v2.4
+                 </p>
+              </footer>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </motion.div>
