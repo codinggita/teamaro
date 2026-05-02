@@ -93,9 +93,13 @@ const Members = () => {
 
                <div className="p-6 flex flex-col items-center text-center -mt-12 flex-grow">
                   <div className="relative mb-4">
-                     <div className="w-20 h-20 rounded-[24px] bg-slate-900 p-1 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 border border-white/10 overflow-hidden">
-                        <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
-                     </div>
+                      <div className="w-20 h-20 rounded-[24px] bg-slate-900 p-1 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 border border-white/10 overflow-hidden">
+                        <img 
+                          src={localStorage.getItem(`vanguard_avatar_${member.id}`) || `https://api.dicebear.com/7.x/${localStorage.getItem(`vanguard_style_${member.id}`) || 'avataaars'}/svg?seed=${member.name}`} 
+                          alt={member.name} 
+                          className="w-full h-full object-cover" 
+                        />
+                      </div>
                      <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-slate-950 bg-emerald-500" />
                   </div>
                   

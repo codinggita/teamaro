@@ -157,6 +157,9 @@ const UserActions = ({ isAuthenticated, user, isMobile }) => {
   const { unreadCount } = useSelector((state) => state.notification);
   if (!isAuthenticated) return null;
 
+  const userAvatar = localStorage.getItem(`vanguard_avatar_${user?.id}`) || null;
+  const userStyle = localStorage.getItem(`vanguard_style_${user?.id}`) || 'avataaars';
+
   return (
     <div className={`flex items-center ${isMobile ? 'w-full justify-between p-4 bg-white/5 rounded-3xl mt-8' : 'gap-6 pr-2'}`}>
       {!isMobile && <div className="w-[1px] h-8 bg-white/10" />}
@@ -178,7 +181,11 @@ const UserActions = ({ isAuthenticated, user, isMobile }) => {
       
       <Link to="/profile" className="relative group">
         <div className={`${isMobile ? 'w-12 h-12' : 'w-10 h-10'} rounded-[14px] bg-slate-950 flex items-center justify-center text-white border border-white/20 group-hover:border-sky-500/50 transition-all duration-500 overflow-hidden shadow-2xl`}>
-           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} className="w-full h-full relative z-10" alt="Avatar" />
+           <img 
+             src={userAvatar || `https://api.dicebear.com/7.x/${userStyle}/svg?seed=${user?.name}`} 
+             className="w-full h-full relative z-10 object-cover" 
+             alt="Avatar" 
+           />
            <div className="absolute inset-0 bg-sky-600/10 group-hover:bg-sky-600/30 transition-colors" />
         </div>
       </Link>
@@ -249,7 +256,11 @@ const Navbar = () => {
                   </button>
                   
                   <Link to="/profile" className="w-8 h-8 rounded-full overflow-hidden border border-white/10">
-                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} className="w-full h-full" alt="User" />
+                    <img 
+                      src={localStorage.getItem(`vanguard_avatar_${user?.id}`) || `https://api.dicebear.com/7.x/${localStorage.getItem(`vanguard_style_${user?.id}`) || 'avataaars'}/svg?seed=${user?.name}`} 
+                      className="w-full h-full object-cover" 
+                      alt="User" 
+                    />
                   </Link>
                 </div>
 
