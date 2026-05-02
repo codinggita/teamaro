@@ -42,10 +42,22 @@ const Chat = () => {
   // Listen for chat messages from other users
   // (Registration is handled globally by Layout.jsx)
   useEffect(() => {
-    socket.on('receiveMessage', (messageData) => {
+    const handleReceiveMessage = (messageData) => {
       dispatch(addMessage(messageData));
+    };
+
+    socket.on('receiveMessage', handleReceiveMessage);
+
+    // Re-register listener if socket reconnects
+    socket.on('connect', () => {
+      socket.off('receiveMessage', handleReceiveMessage);
+      socket.on('receiveMessage', handleReceiveMessage);
     });
-    return () => { socket.off('receiveMessage'); };
+
+    return () => {
+      socket.off('receiveMessage', handleReceiveMessage);
+      socket.off('connect');
+    };
   }, [dispatch]);
 
   const handleSendMessage = (e) => {
@@ -70,6 +82,9 @@ const Chat = () => {
       timestamp: new Date().toISOString(),
       isAdmin: user.role === 'admin',
       file: fileData,
+      avatar: localStorage.getItem(`vanguard_avatar_${user.id || user.accountId || user.name}`),
+      style: localStorage.getItem(`vanguard_style_${user.id || user.accountId || user.name}`) || 'avataaars',
+      seed: localStorage.getItem(`vanguard_seed_${user.id || user.accountId || user.name}`) || user.name,
     };
 
     dispatch(addMessage(newMessage));
@@ -197,7 +212,11 @@ const Chat = () => {
                     <div className={`max-w-[85%] lg:max-w-[70%] flex gap-3 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
                       {!isSameSender ? (
                         <div className={`w-9 h-9 rounded-xl p-0.5 shadow-lg flex-shrink-0 mt-0.5 overflow-hidden border-2 ${isOwn ? 'bg-slate-900 border-white/20' : 'bg-white border-slate-100'}`}>
-                          <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${msg.sender}`} className="w-full h-full" alt="Avatar" />
+                          <img 
+                            src={msg.avatar || `https://api.dicebear.com/7.x/${msg.style || 'avataaars'}/svg?seed=${msg.seed || msg.sender}`} 
+                            className="w-full h-full object-cover" 
+                            alt="Avatar" 
+                          />
                         </div>
                       ) : (
                         <div className="w-9 flex-shrink-0" />
