@@ -82,51 +82,51 @@ const Members = () => {
       >
         {filteredMembers.map((member) => (
           <motion.div key={member.id} variants={itemVariants}>
-            <div className="vanguard-glass-dark group p-0 overflow-hidden flex flex-col h-full border-white/5 hover:border-sky-500/30 transition-all duration-500 rounded-[32px]">
-              {/* Card Header */}
-              <div className="h-24 bg-white/5 relative flex items-center px-6 border-b border-white/5">
-                 <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/10 rounded-full blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
-                 <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${member.role === 'admin' ? 'text-amber-400' : 'text-sky-400'}`}>
+            <div className="vanguard-glass-dark group p-0 overflow-hidden flex flex-col h-full border-white/5 hover:border-sky-500/30 transition-all duration-500 rounded-[28px]">
+              {/* Card Header - Smaller Height */}
+              <div className="h-16 bg-white/5 relative flex items-center px-6 border-b border-white/5">
+                 <div className="absolute top-0 right-0 w-20 h-20 bg-sky-500/10 rounded-full blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                 <span className={`text-[9px] font-black uppercase tracking-[0.3em] ${member.role === 'admin' ? 'text-amber-400' : 'text-sky-400'}`}>
                     {member.role === 'admin' ? 'Strategic Admin' : 'Squadron Member'}
                  </span>
               </div>
 
-               <div className="p-8 flex flex-col items-center text-center -mt-16 flex-grow">
-                  <div className="relative mb-6">
-                     <div className="w-24 h-24 rounded-[30px] bg-slate-900 p-1 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 border border-white/10 overflow-hidden">
+               <div className="p-6 flex flex-col items-center text-center -mt-12 flex-grow">
+                  <div className="relative mb-4">
+                     <div className="w-20 h-20 rounded-[24px] bg-slate-900 p-1 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 border border-white/10 overflow-hidden">
                         <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
                      </div>
-                     <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-4 border-slate-950 bg-emerald-500" />
+                     <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-slate-950 bg-emerald-500" />
                   </div>
                   
-                  <div className="space-y-1 mb-6">
-                     <h3 className="font-black text-2xl text-white tracking-tight italic uppercase">{member.name}</h3>
-                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">{member.accountId}</p>
+                  <div className="space-y-0.5 mb-4">
+                     <h3 className="font-black text-xl text-white tracking-tight italic uppercase">{member.name}</h3>
+                     <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">{member.accountId}</p>
                   </div>
 
-                  <p className="text-[11px] text-white/50 font-bold leading-relaxed tracking-wide flex-grow uppercase italic">
+                  <p className="text-[10px] text-white/50 font-bold leading-relaxed tracking-wide flex-grow uppercase italic line-clamp-2">
                     "{member.bio}"
                   </p>
 
-                  <div className="w-full grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/5">
+                  <div className="w-full grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-white/5">
                      <div className="text-left">
-                        <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">Integrity</p>
-                        <p className="text-sm font-black text-white">{member.integrity}%</p>
+                        <p className="text-[7px] font-black text-white/20 uppercase tracking-widest leading-none">Integrity</p>
+                        <p className="text-xs font-black text-white">{member.integrity}%</p>
                      </div>
                      <div className="text-right">
-                        <p className="text-[8px] font-black text-white/20 uppercase tracking-widest">XP</p>
-                        <p className="text-sm font-black text-sky-400">{member.xp}</p>
+                        <p className="text-[7px] font-black text-white/20 uppercase tracking-widest leading-none">XP</p>
+                        <p className="text-xs font-black text-sky-400">{member.xp}</p>
                      </div>
                   </div>
                </div>
                
-               <footer className="p-6 bg-white/5 flex flex-col gap-3 mt-auto border-t border-white/5">
+               <footer className="p-4 bg-white/5 flex flex-col gap-3 mt-auto border-t border-white/5">
                   <AeroButton 
                     variant="secondary" 
                     onClick={() => navigate(`/profile/${member.id}`)}
-                    className="w-full !py-4 !text-white !bg-white/5 !rounded-2xl !border-white/10 !text-[10px] !font-black !uppercase !tracking-[0.2em] group/btn hover:!bg-white hover:!text-slate-950 transition-all"
+                    className="w-full !py-3 !text-white !bg-white/5 !rounded-xl !border-white/10 !text-[9px] !font-black !uppercase !tracking-[0.2em] group/btn hover:!bg-white hover:!text-slate-950 transition-all"
                   >
-                     Visit Profile <ExternalLink size={14} className="ml-2" />
+                     Visit Profile <ExternalLink size={12} className="ml-2" />
                   </AeroButton>
                </footer>
             </div>
