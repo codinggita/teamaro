@@ -80,7 +80,7 @@ function AppRoutes() {
           <Route path="/polls" element={<Polls />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/calendar" element={<Calendar />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:userId?" element={<Profile />} />
           <Route path="/game-history" element={<GameHistory />} />
           <Route path="/wall-of-fame" element={<WallOfFame />} />
           <Route path="/admin/control" element={<AdminControl />} />
