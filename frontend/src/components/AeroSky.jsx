@@ -57,7 +57,22 @@ const AtmosphericFX = () => {
 export const AeroSky = () => {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-gradient-to-b from-sky-400 via-sky-100 to-white">
-      <Canvas camera={{ position: [0, 0, 30], fov: 60 }} dpr={[1, 2]}>
+      <Canvas 
+        camera={{ position: [0, 0, 30], fov: 60 }} 
+        dpr={[1, 1.5]}
+        gl={{ 
+          antialias: false, 
+          stencil: false, 
+          alpha: false,
+          powerPreference: 'high-performance'
+        }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            console.warn('[AeroSky] WebGL Context Lost. Attempting restoration...');
+          });
+        }}
+      >
         <Sky 
           sunPosition={[100, 10, 100]} 
           turbidity={0.05} 
@@ -78,3 +93,4 @@ export const AeroSky = () => {
     </div>
   );
 };
+
