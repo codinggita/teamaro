@@ -19,6 +19,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const toast = useToast();
   
+  const [activeTab, setActiveTab] = useState('overview');
   const [notificationsOn, setNotificationsOn] = useState(() => localStorage.getItem('vanguard_notif_polls') !== 'false');
   const [privacyOn, setPrivacyOn] = useState(() => localStorage.getItem('vanguard_privacy_mode') === 'true');
   const [syncOn, setSyncOn] = useState(() => localStorage.getItem('vanguard_notif_events') !== 'false');
