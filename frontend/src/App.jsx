@@ -1,51 +1,34 @@
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { rehydratePolls } from './redux/slices/pollSlice';
 import { rehydrateTeams } from './redux/slices/leaderboardSlice';
 import { rehydrateEvents } from './redux/slices/eventSlice';
 import { addNotification } from './redux/slices/notificationSlice';
-
-// --- Components ---
+import Login from './pages/Login';
+import Landing from './pages/Landing';
+import Dashboard from './pages/Dashboard';
+import Members from './pages/Members';
+import Chat from './pages/Chat';
+import Polls from './pages/Polls';
+import Leaderboard from './pages/Leaderboard';
+import Calendar from './pages/Calendar';
+import Profile from './pages/Profile';
+import AdminControl from './pages/AdminControl';
+import AdminDashboardOne from './pages/admin/AdminDashboardOne';
+import AdminDashboardTwo from './pages/admin/AdminDashboardTwo';
+import GameHistory from './pages/GameHistory';
+import WallOfFame from './pages/WallOfFame';
 import { AeroSky } from './components/AeroSky';
 import Layout from './components/Layout';
 import { ProtectedRoute } from './components/AuthGuard';
 import ErrorBoundary from './components/ErrorBoundary';
 import useAnalytics from './hooks/useAnalytics';
 
-// --- Lazy-Loaded Pages ---
-const Login = lazy(() => import('./pages/Login'));
-const Landing = lazy(() => import('./pages/Landing'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Members = lazy(() => import('./pages/Members'));
-const Chat = lazy(() => import('./pages/Chat'));
-const Polls = lazy(() => import('./pages/Polls'));
-const Leaderboard = lazy(() => import('./pages/Leaderboard'));
-const Calendar = lazy(() => import('./pages/Calendar'));
-const Profile = lazy(() => import('./pages/Profile'));
-const AdminControl = lazy(() => import('./pages/AdminControl'));
-const AdminDashboardOne = lazy(() => import('./pages/admin/AdminDashboardOne'));
-const AdminDashboardTwo = lazy(() => import('./pages/admin/AdminDashboardTwo'));
-const GameHistory = lazy(() => import('./pages/GameHistory'));
-const WallOfFame = lazy(() => import('./pages/WallOfFame'));
-
 const syncChannel = new BroadcastChannel('vanguard_sync');
 
-/**
- * LoadingFallback — minimalist loader for Suspense.
- */
-const LoadingFallback = () => (
-  <div className="fixed inset-0 flex items-center justify-center bg-slate-950/20 backdrop-blur-sm z-[9999]">
-    <div className="w-12 h-12 border-2 border-sky-500/20 border-t-sky-500 rounded-full animate-spin" />
-  </div>
-);
-
-/**
- * AppRoutes — rendered inside <Router>.
- */
 function AppRoutes() {
   const dispatch = useDispatch();
-  const { isGlobalLoading } = useSelector((state) => state.ui);
   useAnalytics();
 
   useEffect(() => {
@@ -85,38 +68,32 @@ function AppRoutes() {
 
   return (
     <ErrorBoundary>
-      <Suspense fallback={<LoadingFallback />}>
-        {isGlobalLoading && <LoadingFallback />}
-        <AeroSky />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
+      <AeroSky />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
 
-          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/members" element={<Members />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/polls" element={<Polls />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/game-history" element={<GameHistory />} />
-            <Route path="/wall-of-fame" element={<WallOfFame />} />
-            <Route path="/admin/control" element={<AdminControl />} />
-            <Route path="/admin/dashboard-1" element={<AdminDashboardOne />} />
-            <Route path="/admin/dashboard-2" element={<AdminDashboardTwo />} />
-          </Route>
+        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/members" element={<Members />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/polls" element={<Polls />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/game-history" element={<GameHistory />} />
+          <Route path="/wall-of-fame" element={<WallOfFame />} />
+          <Route path="/admin/control" element={<AdminControl />} />
+          <Route path="/admin/dashboard-1" element={<AdminDashboardOne />} />
+          <Route path="/admin/dashboard-2" element={<AdminDashboardTwo />} />
+        </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </ErrorBoundary>
   );
 }
 
-/**
- * App — entry component.
- */
 function App() {
   return (
     <Router>

@@ -84,7 +84,7 @@ const Profile = () => {
             '@type': 'Person',
             name: user.name,
             identifier: accountId,
-            jobTitle: user.role === 'admin' ? 'Administrator' : 'Operator',
+            jobTitle: user.role === 'admin' ? 'Administrator' : 'Squadron Member',
           },
         }}
       />
@@ -121,7 +121,7 @@ const Profile = () => {
                 <div className="flex items-center gap-3 flex-wrap">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/25 text-sky-400 text-[10px] font-black uppercase tracking-[0.25em]">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    {user.role === 'admin' ? 'Administrator' : 'Operator'}
+                    {user.role === 'admin' ? 'Administrator' : 'Squadron Member'}
                   </span>
                   {user.role === 'admin' && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/25 text-amber-400 text-[10px] font-black uppercase tracking-[0.25em]">
@@ -222,7 +222,7 @@ const Profile = () => {
                   {[
                     { label: 'Full Name', value: user.name, icon: User },
                     { label: 'Account ID', value: accountId, icon: Key },
-                    { label: 'Role', value: user.role === 'admin' ? 'Administrator' : 'Operator', icon: Shield },
+                    { label: 'Role', value: user.role === 'admin' ? 'Administrator' : 'Squadron Member', icon: Shield },
                     { label: 'Status', value: 'Active', icon: Activity },
                     { label: 'Member Since', value: joinDate, icon: Calendar },
                     { label: 'Region', value: 'Global', icon: Globe },

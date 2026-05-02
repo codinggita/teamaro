@@ -71,7 +71,7 @@ const Dashboard = () => {
     >
       <SEO
         title="Dashboard"
-        description={`Welcome back, ${user?.name || 'Operator'}. View your squadron stats, upcoming events, and live performance metrics on the Vanguard AERO command interface.`}
+        description={`Welcome back, ${user?.name || 'Squadron Member'}. View your squadron stats, upcoming events, and live performance metrics on the Vanguard AERO command interface.`}
         url="/dashboard"
         schema={{
           '@context': 'https://schema.org',
@@ -94,7 +94,7 @@ const Dashboard = () => {
                   </div>
                   <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-950 tracking-tighter leading-[1.1]">
                      Welcome back, <br className="hidden sm:block"/>
-                     <span className="text-sky-600">Operator {user?.name?.split('_')[1] || user?.name || 'Alpha'}</span>
+                     <span className="text-sky-600">{user?.name || 'Vanguard'}</span>
                   </h1>
                   <p className="text-slate-500 text-base md:text-lg lg:text-xl font-medium max-w-xl leading-relaxed">
                      Squadron <span className="text-slate-950 font-black">{myTeam?.name || 'Aero'}</span> is currently maintaining optimal performance. Your strategic overview is ready.
