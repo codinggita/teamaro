@@ -19,6 +19,17 @@ const Profile = () => {
   const navigate = useNavigate();
   const toast = useToast();
   
+  // Determine which user data to display (dynamic vs current)
+  const displayUser = useMemo(() => {
+    if (userId) {
+      const data = getUserByGR(userId);
+      if (data) return { ...data, id: userId, accountId: `GR-${userId}` };
+    }
+    return currentUser;
+  }, [userId, currentUser]);
+
+  const isOwnProfile = !userId || userId === (currentUser?.id || currentUser?.grNumber);
+
   const [activeTab, setActiveTab] = useState('overview');
   const [notificationsOn, setNotificationsOn] = useState(() => localStorage.getItem('vanguard_notif_polls') !== 'false');
   const [privacyOn, setPrivacyOn] = useState(() => localStorage.getItem('vanguard_privacy_mode') === 'true');
@@ -30,10 +41,11 @@ const Profile = () => {
     localStorage.setItem('vanguard_notif_polls', notificationsOn);
     localStorage.setItem('vanguard_privacy_mode', privacyOn);
     localStorage.setItem('vanguard_notif_events', syncOn);
-    if (isOwnProfile) {
-      if (profileImage) localStorage.setItem(`vanguard_avatar_${currentUser?.id}`, profileImage);
-      else localStorage.removeItem(`vanguard_avatar_${currentUser?.id}`);
-      localStorage.setItem(`vanguard_style_${currentUser?.id}`, avatarStyle);
+    if (isOwnProfile && currentUser) {
+      const id = currentUser.id || currentUser.grNumber;
+      if (profileImage) localStorage.setItem(`vanguard_avatar_${id}`, profileImage);
+      else localStorage.removeItem(`vanguard_avatar_${id}`);
+      localStorage.setItem(`vanguard_style_${id}`, avatarStyle);
     }
   }, [notificationsOn, privacyOn, syncOn, profileImage, avatarStyle, isOwnProfile, currentUser]);
 
@@ -66,17 +78,6 @@ const Profile = () => {
     setProfileImage(null); // Clear custom photo if switching to character
     toast.info('Avatar Synced', `Identity style switched to ${nextStyle}.`);
   };
-
-  // Determine which user data to display (dynamic vs current)
-  const displayUser = useMemo(() => {
-    if (userId) {
-      const data = getUserByGR(userId);
-      if (data) return { ...data, id: userId, accountId: `GR-${userId}` };
-    }
-    return currentUser;
-  }, [userId, currentUser]);
-
-  const isOwnProfile = !userId || userId === currentUser?.id;
 
   const accountId = displayUser?.accountId || '';
   const joinDate = 'January 2026';
