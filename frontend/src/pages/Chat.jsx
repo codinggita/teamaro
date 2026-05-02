@@ -16,6 +16,8 @@ import FileUploadZone from '../components/FileUploadZone';
 import LiveIndicator from '../components/LiveIndicator';
 import analytics from '../services/analytics';
 
+import { USER_MAP } from '../utils/userMapping';
+
 const Chat = () => {
   const dispatch = useDispatch();
   const chatState = useSelector((state) => state.chat) || {};
@@ -46,16 +48,26 @@ const Chat = () => {
       dispatch(addMessage(messageData));
     };
 
+    const handleMessageHistory = (history) => {
+      // Sync whole history at once
+      if (history && history.length > 0) {
+        history.forEach(msg => dispatch(syncMessages(msg)));
+      }
+    };
+
     socket.on('receiveMessage', handleReceiveMessage);
+    socket.on('message_history', handleMessageHistory);
 
     // Re-register listener if socket reconnects
     socket.on('connect', () => {
       socket.off('receiveMessage', handleReceiveMessage);
       socket.on('receiveMessage', handleReceiveMessage);
+      socket.emit('get_history'); // Request history on reconnect
     });
 
     return () => {
       socket.off('receiveMessage', handleReceiveMessage);
+      socket.off('message_history', handleMessageHistory);
       socket.off('connect');
     };
   }, [dispatch]);
@@ -212,11 +224,16 @@ const Chat = () => {
                     <div className={`max-w-[85%] lg:max-w-[70%] flex gap-3 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
                       {!isSameSender ? (
                         <div className={`w-9 h-9 rounded-xl p-0.5 shadow-lg flex-shrink-0 mt-0.5 overflow-hidden border-2 ${isOwn ? 'bg-slate-900 border-white/20' : 'bg-white border-slate-100'}`}>
-                          <img 
-                            src={msg.avatar || `https://api.dicebear.com/7.x/${msg.style || 'avataaars'}/svg?seed=${msg.seed || msg.sender}`} 
-                            className="w-full h-full object-cover" 
-                            alt="Avatar" 
-                          />
+                          {(() => {
+                            const senderData = Object.values(USER_MAP).find(u => u.name === msg.sender);
+                            return (
+                              <img 
+                                src={senderData?.customImage || msg.avatar || `https://api.dicebear.com/7.x/${msg.style || 'avataaars'}/svg?seed=${msg.seed || msg.sender}`} 
+                                className="w-full h-full object-cover" 
+                                alt="Avatar" 
+                              />
+                            );
+                          })()}
                         </div>
                       ) : (
                         <div className="w-9 flex-shrink-0" />
