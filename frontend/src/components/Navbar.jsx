@@ -199,6 +199,7 @@ const UserActions = ({ isAuthenticated, user, isMobile }) => {
 const Navbar = () => {
   const location = useLocation();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const displayUser = USER_MAP[user?.id] || {};
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -364,7 +365,11 @@ const Navbar = () => {
                   onClick={() => setIsMenuOpen(false)}
                   className="w-10 h-10 rounded-[12px] bg-slate-950 overflow-hidden border border-white/10 group shadow-2xl"
                 >
-                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} className="w-full h-full group-hover:scale-110 transition-transform duration-500" alt="Profile" />
+                  <img 
+                    src={localStorage.getItem(`vanguard_avatar_${user?.id}`) || displayUser?.customImage || `https://api.dicebear.com/7.x/${localStorage.getItem(`vanguard_style_${user?.id}`) || 'avataaars'}/svg?seed=${localStorage.getItem(`vanguard_seed_${user?.id}`) || user?.name}`} 
+                    className="w-full h-full group-hover:scale-110 transition-transform duration-500 object-cover" 
+                    alt="Profile" 
+                  />
                 </Link>
               </div>
             </motion.div>
