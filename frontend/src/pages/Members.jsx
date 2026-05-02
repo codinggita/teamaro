@@ -3,7 +3,8 @@ import {
   Users, Search, ShieldCheck, Star, Award, 
   Filter, ArrowRight, Activity, 
   Target, Cpu, Terminal, Shield, ExternalLink,
-  ChevronRight, Zap, Globe, Lock, User
+  ChevronRight, Zap, Globe, Lock, User, MoreVertical,
+  Fingerprint, Command
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -33,152 +34,130 @@ const Members = () => {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1, 
-      transition: { staggerChildren: 0.05, delayChildren: 0.2 } 
-    }
-  };
-
-  const cardVariants = {
-    hidden: { y: 30, opacity: 0, scale: 0.95 },
-    visible: { 
-      y: 0, 
-      opacity: 1, 
-      scale: 1,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } 
+      transition: { staggerChildren: 0.03 } 
     }
   };
 
   return (
     <motion.div 
-      variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-20 pb-40 pt-10 px-4 sm:px-6"
+      className="min-h-screen pb-40"
     >
       <SEO
-        title="Member Roster"
-        description="Access the Vanguard AERO elite operator directory. Interactive identity grid for the squadron's 30 authorized members."
+        title="Squadron Roster"
+        description="Vanguard AERO Elite Operator Directory. High-fidelity identity grid."
         url="/members"
       />
 
-      {/* ── Cinematic Header ────────────────────────────────────────────────── */}
-      <header className="relative flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="inline-flex items-center gap-3 px-4 py-1.5 bg-sky-500/10 text-sky-400 rounded-full text-[10px] font-black uppercase tracking-[0.4em] border border-sky-500/20"
-        >
-           <Activity size={12} className="animate-pulse" /> Vanguard Authorized Directory
-        </motion.div>
-        
-        <div className="space-y-4">
-          <h1 className="text-6xl md:text-9xl font-black text-white tracking-tighter leading-none italic uppercase">
-             Member<span className="text-sky-500 vanguard-text-glow">Net</span>
-          </h1>
-          <p className="text-white/40 text-lg md:text-2xl font-medium italic max-w-2xl mx-auto">
-             Encrypted repository of the <span className="text-white font-bold">30 Elite Operators</span> currently deployed in the AERO ecosystem.
-          </p>
-        </div>
+      {/* ── Fixed Header Section ────────────────────────────────────────── */}
+      <section className="pt-20 pb-16 border-b border-white/5 px-6">
+        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-end justify-between gap-12">
+          <div className="space-y-6">
+            <motion.div 
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.5em] text-sky-400"
+            >
+              <Fingerprint size={16} /> Identity Verification Required
+            </motion.div>
+            <h1 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.8] italic uppercase">
+              Vanguard<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">Collective</span>
+            </h1>
+          </div>
 
-        {/* Search Bar Refinement */}
-        <div className="w-full max-w-xl relative group">
-          <div className="absolute inset-0 bg-sky-500/5 blur-2xl group-focus-within:bg-sky-500/15 transition-all" />
-          <Search className="absolute left-7 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-sky-500 transition-colors" size={20} />
-          <input 
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="AUTHENTICATE IDENTITY..."
-            className="w-full bg-white/5 border border-white/10 rounded-[30px] py-6 pl-16 pr-8 text-sm font-black text-white shadow-2xl focus:border-sky-500/50 transition-all outline-none placeholder:text-white/10 italic tracking-widest"
-          />
-          <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-2">
-             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-             <span className="text-[9px] font-black text-white/30 tracking-widest uppercase">Live Scan</span>
+          <div className="w-full md:w-[400px] space-y-4">
+             <p className="text-white/30 text-sm font-medium italic leading-relaxed">
+                Displaying 30 active operators authorized for system-wide deployment. All identities are verified via GR-Serial encryption.
+             </p>
+             <div className="relative group">
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-sky-500 transition-colors" size={18} />
+                <input 
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="LOCATE OPERATOR..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-14 pr-8 text-[11px] font-black text-white focus:border-sky-500/50 transition-all outline-none placeholder:text-white/10 tracking-[0.2em]"
+                />
+             </div>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* ── Member Grid ────────────────────────────────────────────────────── */}
+      {/* ── The Aurora Identity Grid ────────────────────────────────────── */}
       <motion.div 
         variants={containerVariants}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 px-6 mt-1"
       >
         <AnimatePresence>
-          {filteredMembers.map((member) => (
+          {filteredMembers.map((member, index) => (
             <motion.div 
-              key={member.id} 
-              variants={cardVariants}
-              layout
-              whileHover={{ y: -10 }}
-              className="relative group"
+              key={member.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.5, delay: index * 0.02 }}
+              className="group relative"
             >
-              {/* Card Glow Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-sky-600/0 to-indigo-600/0 group-hover:from-sky-600/10 group-hover:to-indigo-600/10 blur-3xl transition-all duration-700 rounded-[40px]" />
-              
-              <div className="vanguard-glass-dark relative flex flex-col h-full border-white/5 group-hover:border-sky-500/40 transition-all duration-500 rounded-[40px] overflow-hidden">
-                {/* Identity Header */}
-                <div className="h-32 bg-gradient-to-br from-white/5 to-transparent p-8 flex items-start justify-between">
-                   <div className="space-y-1">
-                      <span className={`text-[10px] font-black uppercase tracking-[0.4em] ${member.role === 'admin' ? 'text-amber-400' : 'text-sky-400'}`}>
-                         {member.role === 'admin' ? 'Command Admin' : 'Active Member'}
-                      </span>
-                      <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">{member.accountId}</p>
-                   </div>
-                   {member.role === 'admin' ? (
-                     <ShieldCheck className="text-amber-400/50" size={24} />
-                   ) : (
-                     <Lock className="text-white/10" size={18} />
-                   )}
-                </div>
-
-                {/* Avatar & Info */}
-                <div className="px-8 pb-10 flex flex-col items-center text-center -mt-12 flex-grow">
-                   <div className="relative mb-8 group-hover:scale-110 transition-transform duration-700">
-                      {/* Scanning Ring */}
-                      <div className="absolute -inset-3 border border-sky-500/20 rounded-[40px] animate-[spin_10s_linear_infinite] group-hover:border-sky-500/50 transition-colors" />
-                      <div className="absolute -inset-6 border border-white/5 rounded-[50px] animate-[spin_15s_linear_infinite_reverse]" />
-                      
-                      <div className="w-28 h-28 rounded-[35px] bg-slate-950 p-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden relative z-10">
-                         <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                      </div>
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-4 border-slate-950 bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)] z-20" />
-                   </div>
-                   
-                   <div className="space-y-2 mb-8">
-                      <h3 className="font-black text-3xl text-white tracking-tighter italic uppercase group-hover:text-sky-400 transition-colors">
-                        {member.name}
-                      </h3>
-                      <div className="h-0.5 w-8 bg-sky-500/20 mx-auto rounded-full group-hover:w-16 transition-all duration-500" />
-                   </div>
-
-                   <p className="text-[11px] text-white/40 font-bold leading-relaxed tracking-wide flex-grow uppercase italic px-4">
-                     "{member.bio}"
-                   </p>
-
-                   {/* Tech Metrics */}
-                   <div className="w-full grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-white/5">
-                      <div className="text-left space-y-1">
-                         <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.2em]">Efficiency</p>
-                         <p className="text-sm font-black text-white italic">{member.integrity}%</p>
-                      </div>
-                      <div className="text-right space-y-1">
-                         <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.2em]">Status</p>
-                         <p className="text-sm font-black text-emerald-400 italic uppercase">Authorized</p>
-                      </div>
-                   </div>
-                </div>
+              {/* The Glass Panel */}
+              <div className="vanguard-glass-dark relative h-[420px] border-white/5 group-hover:border-white/20 transition-all duration-700 overflow-hidden flex flex-col p-10">
                 
-                {/* Action Footer */}
-                <footer className="p-4 bg-white/[0.02] flex flex-col gap-3 mt-auto border-t border-white/5">
-                   <button 
-                     onClick={() => navigate(`/profile/${member.id}`)}
-                     className="w-full py-5 rounded-[24px] bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.3em] group/btn hover:bg-white hover:text-slate-950 transition-all active:scale-[0.98] flex items-center justify-center gap-3"
-                   >
-                      Access Profile <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                   </button>
-                </footer>
+                {/* Background Aurora Effect */}
+                <div className={`absolute -top-20 -right-20 w-64 h-64 blur-[100px] opacity-0 group-hover:opacity-30 transition-opacity duration-1000 pointer-events-none
+                  ${member.role === 'admin' ? 'bg-amber-500' : 'bg-sky-500'}`} 
+                />
 
-                {/* Corner Decoration */}
-                <div className="absolute bottom-0 right-0 w-12 h-12 border-r-2 border-b-2 border-sky-500/0 group-hover:border-sky-500/40 transition-all duration-500 rounded-br-[40px] pointer-events-none" />
+                {/* Identity Readout */}
+                <div className="flex justify-between items-start relative z-10">
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em]">Auth-Level</p>
+                    <p className={`text-xs font-black uppercase tracking-widest ${member.role === 'admin' ? 'text-amber-400' : 'text-sky-400'}`}>
+                       {member.role === 'admin' ? 'SEC-LEVEL-01' : 'SEC-LEVEL-04'}
+                    </p>
+                  </div>
+                  <MoreVertical className="text-white/10 group-hover:text-white/40 transition-colors" size={20} />
+                </div>
+
+                {/* Main Identity Content */}
+                <div className="mt-auto relative z-10 space-y-6">
+                  {/* Floating Avatar Strip */}
+                  <div className="flex items-end gap-6">
+                    <div className="relative">
+                      <div className="w-24 h-24 rounded-2xl bg-white/5 border border-white/10 overflow-hidden group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700">
+                        <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-slate-950 bg-emerald-500" />
+                    </div>
+                    <div className="space-y-0.5 mb-2">
+                       <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] font-mono">{member.accountId}</p>
+                       <h3 className="text-4xl font-black text-white tracking-tighter leading-none italic uppercase truncate max-w-[180px]">
+                         {member.name}
+                       </h3>
+                    </div>
+                  </div>
+
+                  {/* Bio readout */}
+                  <p className="text-xs text-white/40 font-medium italic leading-relaxed line-clamp-2 pr-10 group-hover:text-white/70 transition-colors duration-500">
+                    "{member.bio}"
+                  </p>
+
+                  {/* Tech Action */}
+                  <div className="pt-6">
+                    <button 
+                      onClick={() => navigate(`/profile/${member.id}`)}
+                      className="group/btn flex items-center gap-3 text-[10px] font-black text-sky-400 uppercase tracking-[0.4em] hover:text-white transition-all"
+                    >
+                      Initialize Link <ChevronRight size={14} className="group-hover/btn:translate-x-2 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Aesthetic Decoration - Line scan */}
+                <div className="absolute left-0 bottom-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-1000" />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-10">
+                   {[1,2,3,4,5].map(i => <div key={i} className="w-1 h-1 bg-white rounded-full" />)}
+                </div>
               </div>
             </motion.div>
           ))}
@@ -187,19 +166,10 @@ const Members = () => {
 
       {/* Empty State */}
       {filteredMembers.length === 0 && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center py-40 space-y-6 text-center"
-        >
-          <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10 animate-pulse">
-             <Search size={32} className="text-white/20" />
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-2xl font-black text-white uppercase italic tracking-widest">No Identities Located</h3>
-            <p className="text-white/30 text-sm font-bold uppercase tracking-widest">Adjust search parameters and try again.</p>
-          </div>
-        </motion.div>
+        <div className="py-40 text-center space-y-6">
+           <Command className="mx-auto text-white/10 animate-spin" size={48} />
+           <p className="text-sm font-black text-white/20 uppercase tracking-[0.5em]">Searching Central Database...</p>
+        </div>
       )}
 
       <TechnicalDivider />
