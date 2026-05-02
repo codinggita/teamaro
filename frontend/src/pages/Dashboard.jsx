@@ -17,6 +17,7 @@ import { format } from 'date-fns';
 import SEO from '../components/SEO';
 
 import { USER_MAP } from '../utils/userMapping';
+import commanderOfficial from '../assets/profiles/devanshi_official.jpg';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -30,8 +31,7 @@ const Dashboard = () => {
 
   // Resolve Commander Data
   const commanderTeam = teams.find(t => t.id === 'aero') || teams[0];
-  const commanderData = Object.values(USER_MAP).find(u => u.name === 'Devanshi' || u.name === commanderTeam?.leader);
-  const commanderPhoto = commanderData?.customImage || `https://api.dicebear.com/7.x/avataaars/svg?seed=${commanderTeam?.leader || 'Commander'}`;
+  const commanderPhoto = commanderOfficial;
   useEffect(() => {
     dispatch(rehydrateTeams());
     dispatch(rehydrateEvents());

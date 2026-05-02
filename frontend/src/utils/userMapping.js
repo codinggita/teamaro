@@ -2,7 +2,7 @@
  * User mapping for the Vanguard AERO platform.
  * Maps GR Numbers (108601 - 108630) to Student Names, Roles, and Bios.
  */
-import devanshiPhoto from '../assets/profiles/devanshi.png';
+import devanshiPhoto from '../assets/profiles/devanshi_official.jpg';
 
 export const USER_MAP = {
   108601: { 
