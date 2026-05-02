@@ -1,141 +1,106 @@
 # 🚀 AERO – Vanguard Game Platform
 
-AERO is a modern, interactive platform designed to manage team-based activities within a Vanguard. It helps teams coordinate weekly games, make decisions through voting, track performance, and maintain a structured workflow in a fun and engaging way.
-
-## 🎯 Problem Statement
-
-In our batch, 120 students are divided into 4 Vanguards, each with 30 members. Every week, one Vanguard organizes a game.
-
-Previously, coordination was done using WhatsApp, which led to:
-- ❌ Unstructured discussions
-- ❌ Messages getting lost
-- ❌ No clear decision-making process
-- ❌ No record of past games
-- ❌ No performance tracking
-
-## 💡 Solution
-
-AERO solves this by providing a centralized platform where all activities are managed in a structured flow:
-**Discuss → Vote → Schedule → Play → Track**
+AERO is a premium, high-fidelity platform designed to manage team-based activities within the Vanguard community. It transforms unstructured communication into a streamlined workflow: **Discuss → Vote → Schedule → Play → Track**.
 
 ---
 
 ## ✨ Key Features
 
-### 💬 Real-Time Chat
-- Group chat for all members
-- Instant communication
-- Organized discussion
+### 🔐 Advanced Authentication
+- Role-based access (Admin/Member).
+- Secure "Remember Me" functionality (per-user basis).
+- Automatic logout cleanup for all session/local data.
 
-### 🗳️ Poll System
-- Create polls to decide games
-- Members vote
-- Highest voted game is selected
+### 💬 Real-Time Ecosystem
+- **Collective Chat**: High-density workspace for squadron discussions.
+- **Live Notifications**: Real-time alerts for polls, events, and rankings.
+- **Socket Health**: Real-time monitoring of connection status.
 
-### 📅 Event & Game Scheduling
-- Weekly game scheduling (Wednesday)
-- Manual event editing
-- Organized calendar view
+### 🗳️ Strategic Operations
+- **Poll System**: Democratic decision-making for weekly games.
+- **Calendar & Scheduling**: Automated weekly game slots (Wednesdays) with manual override.
+- **Leaderboard & MVP**: Dynamic performance tracking and "Wall of Fame" highlights.
 
-### 👥 Game Check-In
-- Track who played and who didn’t
-- Works like attendance system
-- Used for performance tracking
-
-### 📊 Game History
-- Stores all past games
-- Shows: Game name, Date, Scores, Winner
-
-### 🏆 Leaderboard
-- Tracks performance of members
-- Points based on: Participation, Wins, Achievements
-
-### 🌟 Wall of Fame
-- Highlights top performers
-- Displays MVPs
-- Encourages competition
-
-### 🔔 Notifications
-- Real-time updates
-- Alerts for: New polls, Messages, Events
-
-### 🛡️ Admin Panel
-- Separate admin access
-- Manage: Polls, Events, Results, Members
+### 🛠️ Technical Excellence
+- **Storage Utilities**: Centralized, fallback-aware wrappers for `localStorage` and `sessionStorage`.
+- **Code Quality**: Strict ESLint configuration and Prettier formatting project-wide.
+- **AeroSky Engine**: Immersive 3D atmospheric background system.
 
 ---
 
-## 🎨 UI / UX Highlights
-- Clean and modern light-blue theme
-- Floating navbar
-- Smooth animations and transitions
-- Scroll-based effects
-- Premium interactive design
+## 📂 Project Structure
+
+### 💻 Frontend (`/frontend`)
+- `src/components/` — Reusable UI components (AeroUI, Layout, SEO).
+- `src/hooks/` — Custom hooks (`useAuth`, `useSocketStatus`, `useStorage`).
+- `src/pages/` — Core views (Dashboard, Chat, Polls, Admin Control).
+- `src/redux/` — State management (Slices for auth, polls, events).
+- `src/services/` — API clients and Socket.IO configuration.
+- `src/utils/` — Storage utilities, constants, and mock database.
+
+### ⚙️ Backend (`/backend`)
+- `src/controllers/` — Request handling logic.
+- `src/models/` — MongoDB schemas for Users, Polls, and Games.
+- `src/routes/` — API endpoint definitions.
+- `src/middleware/` — Auth validation and error handling.
+- `src/config/` — Database and environment configuration.
 
 ---
 
-## 🧠 Tech Stack
+## 🚀 Getting Started
 
-### Frontend
-- **Framework**: React (Vite)
-- **Styling**: Tailwind CSS
-- **State**: Redux Toolkit
-- **Routing**: React Router
-- **Animations**: Framer Motion
-- **Scrolling**: Lenis
-- **3D**: React Three Fiber / Spline
-- **API**: Axios & Socket.IO Client
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [MongoDB](https://www.mongodb.com/) (Local or Atlas)
 
-### Backend (Planned)
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB & Mongoose
-- **Real-time**: Socket.IO
-- **Security**: JWT Authentication
+### Installation
 
----
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Dhvanitkanabar/teamaero.git
+   cd teamaero
+   ```
 
-## 🔁 System Architecture
-```
-Frontend (React)
-        ↓
-API & Socket Requests
-        ↓
-Backend (Node.js + Express)
-        ↓
-Database (MongoDB)
-```
+2. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-## 📁 Project Structure
-- `frontend/` → UI & Client-side logic
-- `backend/` → Server & API logic
+3. **Backend Setup**
+   ```bash
+   cd ../backend
+   npm install
+   # Create a .env file based on .env.example
+   npm start
+   ```
 
 ---
 
-## 🚧 Current Status
-- ✅ Login page is implemented
-- ✅ UI design is completed in Figma
-- ✅ Basic frontend setup is ready
+## 🛠️ Development Tools
 
-## 🔮 Future Enhancements
-- 🔹 Full frontend development (Dashboard, Chat, Polls, etc.)
-- 🔹 Backend API development using Node.js and Express
-- 🔹 Database integration with MongoDB
-- 🔹 Real-time features using Socket.IO
-- 🔹 Game scheduling and calendar system
-- 🔹 Leaderboard and performance tracking system
-- 🔹 Admin panel functionality
-- 🔹 Push notifications
-- 🔹 Mobile app (React Native)
+### API Documentation
+This project includes a **Postman Collection** for testing and documenting API endpoints.
+- **File**: `Vanguard_AERO_API.postman_collection.json`
+- **How to use**: 
+  1. Open [Postman](https://www.postman.com/).
+  2. Click **Import** and select the `.json` file from the project root.
+  3. Configure the `baseUrl` variable (default is `http://localhost:5000/api`).
+
+### Code Quality
+Maintain standards using the following commands in the `frontend` directory:
+- **Linting**: `npm run lint` (Check for errors) or `npm run lint:fix` (Auto-fix).
+- **Formatting**: `npm run format` (Format all files using Prettier).
+
+### Tech Stack
+- **Frontend**: React, Vite, Redux Toolkit, Framer Motion, Tailwind CSS, Three.js.
+- **Backend**: Node.js, Express, MongoDB, Socket.IO.
 
 ---
 
 ## 🎯 Final Vision
-AERO aims to become a complete team management and activity coordination platform that is: **Structured, Interactive, Performance-driven, and Visually engaging.**
+AERO aims to provide a structured, interactive, and visually immersive command center for the Vanguard community, ensuring that every operation—from voting on a game to tracking an MVP—is handled with precision and style.
 
-**👨‍💻 Developed For**: Vanguard team-based game coordination and activity management.
-
----
-
-## 🧾 Summary
-AERO transforms unstructured communication into a well-organized system that improves teamwork, decision-making, and engagement.
+**👨‍💻 Developed By**: Vanguard Development Team
