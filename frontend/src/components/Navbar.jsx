@@ -185,7 +185,7 @@ const UserActions = ({ isAuthenticated, user, isMobile }) => {
       <Link to="/profile" className="relative group">
         <div className={`${isMobile ? 'w-12 h-12' : 'w-10 h-10'} rounded-[14px] bg-slate-950 flex items-center justify-center text-white border border-white/20 group-hover:border-sky-500/50 transition-all duration-500 overflow-hidden shadow-2xl`}>
            <img 
-             src={displayUser?.customImage || userAvatar || `https://api.dicebear.com/7.x/${userStyle}/svg?seed=${localStorage.getItem(`vanguard_seed_${user?.id}`) || user?.name}`} 
+             src={userAvatar || `https://api.dicebear.com/7.x/${userStyle}/svg?seed=${localStorage.getItem(`vanguard_seed_${user?.id}`) || user?.name}`} 
              className="w-full h-full relative z-10 object-cover" 
              alt="Avatar" 
            />
@@ -261,7 +261,7 @@ const Navbar = () => {
                   
                   <Link to="/profile" className="w-8 h-8 rounded-full overflow-hidden border border-white/10">
                     <img 
-                      src={displayUser?.customImage || localStorage.getItem(`vanguard_avatar_${user?.id}`) || `https://api.dicebear.com/7.x/${localStorage.getItem(`vanguard_style_${user?.id}`) || 'avataaars'}/svg?seed=${localStorage.getItem(`vanguard_seed_${user?.id}`) || user?.name}`} 
+                      src={localStorage.getItem(`vanguard_avatar_${user?.id}`) || `https://api.dicebear.com/7.x/${localStorage.getItem(`vanguard_style_${user?.id}`) || 'avataaars'}/svg?seed=${localStorage.getItem(`vanguard_seed_${user?.id}`) || user?.name}`} 
                       className="w-full h-full object-cover" 
                       alt="User" 
                     />
@@ -365,11 +365,7 @@ const Navbar = () => {
                   onClick={() => setIsMenuOpen(false)}
                   className="w-10 h-10 rounded-[12px] bg-slate-950 overflow-hidden border border-white/10 group shadow-2xl"
                 >
-                  <img 
-                    src={localStorage.getItem(`vanguard_avatar_${user?.id}`) || displayUser?.customImage || `https://api.dicebear.com/7.x/${localStorage.getItem(`vanguard_style_${user?.id}`) || 'avataaars'}/svg?seed=${localStorage.getItem(`vanguard_seed_${user?.id}`) || user?.name}`} 
-                    className="w-full h-full group-hover:scale-110 transition-transform duration-500 object-cover" 
-                    alt="Profile" 
-                  />
+                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} className="w-full h-full group-hover:scale-110 transition-transform duration-500" alt="Profile" />
                 </Link>
               </div>
             </motion.div>
