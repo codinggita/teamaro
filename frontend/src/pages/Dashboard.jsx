@@ -29,9 +29,9 @@ const Dashboard = () => {
   const members = userState.members || []; 
 
   // Resolve Commander Data
-  const myTeam = teams.find(t => t.id === 'aero') || teams[0];
-  const commanderData = Object.values(USER_MAP).find(u => u.name === 'Devanshi' || u.name === myTeam?.leader);
-  const commanderPhoto = commanderData?.customImage || `https://api.dicebear.com/7.x/avataaars/svg?seed=${myTeam?.leader || 'Commander'}`;
+  const commanderTeam = teams.find(t => t.id === 'aero') || teams[0];
+  const commanderData = Object.values(USER_MAP).find(u => u.name === 'Devanshi' || u.name === commanderTeam?.leader);
+  const commanderPhoto = commanderData?.customImage || `https://api.dicebear.com/7.x/avataaars/svg?seed=${commanderTeam?.leader || 'Commander'}`;
   useEffect(() => {
     dispatch(rehydrateTeams());
     dispatch(rehydrateEvents());
